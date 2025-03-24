@@ -76,14 +76,14 @@ function Headers() {
               </NavLink>
             </li>
           </ul>
-          <div className={styles.authButtons}>
+          {/* <div className={styles.authButtons}>
             <button className={`btn btn-secondary ${styles.loginBtn}`}>
               Log In
             </button>
             <button className={`btn btn-primary ${styles.signupBtn}`}>
               Sign Up
             </button>
-          </div>
+          </div> */}
         </nav>
       </div>
     </header>
