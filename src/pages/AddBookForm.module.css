@@ -1,0 +1,90 @@
+.addBookForm {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .formHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .formTitle {
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+  
+  .closeButton {
+    background: none;
+    border: none;
+    font-size: 1.25rem;
+    color: #777;
+    cursor: pointer;
+  }
+  
+  .formGroup {
+    margin-bottom: 1.25rem;
+    width: 100%;
+  }
+  
+  .formRow {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 0;
+  }
+  
+  .formRow .formGroup {
+    flex: 1;
+  }
+  
+  .formLabel {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    font-size: 0.95rem;
+  }
+  
+  .formInput,
+  .formTextarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-family: inherit;
+  }
+  
+  .formTextarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+  
+  .inputError {
+    border-color: #dc3545;
+  }
+  
+  .errorMessage {
+    display: block;
+    color: #dc3545;
+    font-size: 0.85rem;
+    margin-top: 0.25rem;
+  }
+  
+  .formActions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #eee;
+  }
+  
+  @media (max-width: 576px) {
+    .formRow {
+      flex-direction: column;
+      gap: 0;
+    }
+  }

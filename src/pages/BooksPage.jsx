@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import styles from "./BooksPage.module.css";
 import BookList from "./BookList";
+import AddBookForm from "./AddBookForm";
 
 const initialBooks = [
   {
@@ -67,10 +68,34 @@ const initialBooks = [
 ];
 function BooksPage() {
   const [books, setBooks] = useState(initialBooks);
+  const [searchTerm, setSearchTerm] = useState("");
   const [selectedBook, setSelectedBook] = useState(null);
+  const [showAddForm, setShowAddForm] = useState(false);
 
-  function handleShowAddForm() {}
+  //   function handleShowAddForm() {}
   function handleSelectBook() {}
+  const handleShowAddForm = () => {
+    setSelectedBook(null);
+    setShowAddForm(true);
+  };
+
+  const handleAddBook = (newBook) => {
+    const bookWithId = {
+      ...newBook,
+      id: books.length + 1,
+      cover: "https://via.placeholder.com/200x300",
+    };
+    setBooks([...books, bookWithId]);
+    console.log(bookWithId);
+    setShowAddForm(false);
+  };
+
+  const handleDeleteBook = (bookId) => {
+    setBooks(books.filter((book) => book.id !== bookId));
+    if (selectedBook && selectedBook.id === bookId) {
+      setSelectedBook(null);
+    }
+  };
   return (
     <div className="section">
       <div className="container">
@@ -82,6 +107,24 @@ function BooksPage() {
         <div className={styles.booksPageContent}>
           <div className={styles.booksListSection}>
             <div className={styles.booksControls}>
+              {/* <div className={styles.searchContainer}>
+                <input
+                  type="text"
+                  placeholder="Search books..."
+                  value={searchTerm}
+                  onChange={handleSearch}
+                  className={styles.searchInput}
+                />
+                {searchTerm && (
+                  <button
+                    className={styles.clearSearchBtn}
+                    onClick={handleClearSearch}
+                    aria-label="Clear search"
+                  >
+                    ✕
+                  </button>
+                )}
+              </div> */}
               <button
                 className={`btn btn-primary ${styles.addBookBtn}`}
                 onClick={handleShowAddForm}
@@ -94,6 +137,13 @@ function BooksPage() {
               books={books}
               onSelectBook={handleSelectBook}
               selectedBookId={selectedBook ? selectedBook.id : null}
+            />
+          </div>
+
+          <div className={styles.bookDetailsSection}>
+            <AddBookForm
+              onAddBook={handleAddBook}
+              onCancel={() => setShowAddForm(false)}
             />
           </div>
         </div>
