@@ -4,6 +4,7 @@ import viteLogo from "/vite.svg";
 import "./App.css";
 import Headers from "./components/Headers";
 import Home from "./pages/Home";
+import BooksPage from "./pages/BooksPage";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <Headers />
       <main>
         <Home />
+        <BooksPage />
       </main>
     </div>
   );
