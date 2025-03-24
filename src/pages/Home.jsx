@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styles from "./Home.module.css";
 import Hero from "./Hero";
+import BooksPage from "./BooksPage";
 
 function Home() {
   return (
@@ -24,6 +25,7 @@ function Home() {
           </div>
         </div>
       </section>
+      <BooksPage />
     </div>
   );
 }

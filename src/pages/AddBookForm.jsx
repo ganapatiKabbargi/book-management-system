@@ -65,6 +65,14 @@ function AddBookForm({ onAddBook, onCancel }) {
         ...bookData,
         year: Number.parseInt(bookData.year),
       });
+
+      setBookData({
+        title: "",
+        author: "",
+        genre: "",
+        year: "",
+        description: "",
+      });
     }
   };
   return (

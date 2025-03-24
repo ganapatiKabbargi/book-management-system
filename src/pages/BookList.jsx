@@ -9,6 +9,8 @@ function BookList({ books, onSelectBook, selectedBookId }) {
       </div>
     );
   }
+
+  function handleDelete() {}
   return (
     <div className={styles.bookList}>
       {books.map((book) => (
@@ -31,6 +33,12 @@ function BookList({ books, onSelectBook, selectedBookId }) {
               <span className={styles.bookGenre}>{book.genre}</span>
               <span className={styles.bookYear}>{book.year}</span>
             </div>
+          </div>
+          <div className={styles.detailsActions}>
+            <button className="btn btn-secondary">Edit</button>
+            <button className="btn btn-danger" onClick={handleDelete}>
+              Delete
+            </button>
           </div>
         </div>
       ))}

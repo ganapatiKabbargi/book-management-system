@@ -3,6 +3,7 @@ import { useState } from "react";
 import styles from "./BooksPage.module.css";
 import BookList from "./BookList";
 import AddBookForm from "./AddBookForm";
+import { useNavigate } from "react-router-dom";
 
 const initialBooks = [
   {
@@ -71,9 +72,14 @@ function BooksPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedBook, setSelectedBook] = useState(null);
   const [showAddForm, setShowAddForm] = useState(false);
+  const navigate = useNavigate();
 
   //   function handleShowAddForm() {}
-  function handleSelectBook() {}
+  function handleSelectBook(book) {
+    setSelectedBook(book);
+    navigate(`/bookDetails/${book.id}`);
+  }
+
   const handleShowAddForm = () => {
     setSelectedBook(null);
     setShowAddForm(true);
