@@ -5,7 +5,12 @@ import BookList from "./BookList";
 import AddBookForm from "./AddBookForm";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { addBook, deleteBook, updateBook } from "../store/booksSlice";
+import {
+  addBook,
+  deleteBook,
+  updateBook,
+  updateBooks,
+} from "../store/booksSlice";
 
 function BooksPage() {
   //   const [books, setBooks] = useState(initialBooks);
@@ -39,7 +44,9 @@ function BooksPage() {
       id: books.length + 1,
       // cover: "https://via.placeholder.com/200x300",
     };
-    dispatch(addBook(bookWithId));
+    const updatedBooks = [...books, bookWithId];
+    dispatch(addBook(updatedBooks));
+    dispatch(updateBooks({ books: updatedBooks }));
     console.log(bookWithId);
     setShowAddForm(false);
   };

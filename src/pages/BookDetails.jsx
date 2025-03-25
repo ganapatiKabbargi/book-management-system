@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./BookDetails.module.css";
 import { useNavigate, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const initialBooks = [
   {
@@ -9,7 +10,8 @@ const initialBooks = [
     author: "Harper Lee",
     genre: "Fiction",
     year: 1960,
-    cover: "https://via.placeholder.com/200x300",
+    cover:
+      "https://media.glamour.com/photos/56e1f3c462b398fa64cbd304/master/w_1600%2Cc_limit/entertainment-2016-02-18-main.jpg",
     description:
       "A gripping, heart-wrenching, and wholly remarkable tale of coming-of-age in a South poisoned by virulent prejudice.",
   },
@@ -65,10 +67,11 @@ const initialBooks = [
   },
 ];
 function BookDetails() {
+  const books = useSelector((state) => state.booksAuth.books);
   const params = useParams();
   const navigate = useNavigate();
   console.log(params.bookId);
-  const selectedBook = initialBooks.filter((b) => {
+  const selectedBook = books.filter((b) => {
     return b.id == params.bookId;
   });
   const [book] = selectedBook;

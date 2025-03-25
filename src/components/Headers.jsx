@@ -42,7 +42,7 @@ function Headers() {
                 Home
               </NavLink>
             </li>
-            <li className={styles.navItem}>
+            {/* <li className={styles.navItem}>
               <NavLink
                 to="/features"
                 className={({ isActive }) =>
@@ -52,8 +52,8 @@ function Headers() {
               >
                 Features
               </NavLink>
-            </li>
-            <li className={styles.navItem}>
+            </li> */}
+            {/* <li className={styles.navItem}>
               <NavLink
                 to="/books"
                 className={({ isActive }) =>
@@ -63,8 +63,8 @@ function Headers() {
               >
                 Books
               </NavLink>
-            </li>
-            <li className={styles.navItem}>
+            </li> */}
+            {/* <li className={styles.navItem}>
               <NavLink
                 to="/about"
                 className={({ isActive }) =>
@@ -74,7 +74,7 @@ function Headers() {
               >
                 About
               </NavLink>
-            </li>
+            </li> */}
           </ul>
           {/* <div className={styles.authButtons}>
             <button className={`btn btn-secondary ${styles.loginBtn}`}>

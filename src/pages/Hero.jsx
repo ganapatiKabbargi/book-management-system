@@ -26,7 +26,7 @@ function Hero() {
           </div>
           <div className={styles.heroImage}>
             <img
-              src="https://via.placeholder.com/500x400"
+              src="https://images.pexels.com/photos/18620042/pexels-photo-18620042/free-photo-of-books-stored-in-a-white-library-bookcase.jpeg?auto=compress&cs=tinysrgb&w=500"
               alt="Book Management"
               className={styles.image}
             />

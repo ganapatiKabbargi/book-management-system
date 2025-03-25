@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 const initialBooks = {
   books: [
@@ -8,7 +8,8 @@ const initialBooks = {
       author: "Harper Lee",
       genre: "Fiction",
       year: 1960,
-      cover: "https://via.placeholder.com/200x300",
+      cover:
+        "https://media.glamour.com/photos/56e1f3c462b398fa64cbd304/master/w_1600%2Cc_limit/entertainment-2016-02-18-main.jpg",
       description:
         "A gripping, heart-wrenching, and wholly remarkable tale of coming-of-age in a South poisoned by virulent prejudice.",
     },
@@ -18,7 +19,8 @@ const initialBooks = {
       author: "George Orwell",
       genre: "Dystopian",
       year: 1949,
-      cover: "https://via.placeholder.com/200x300",
+      cover:
+        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/b468d093312907.5e6139cf2ab03.png",
       description:
         "A dystopian social science fiction novel and cautionary tale set in a totalitarian society.",
     },
@@ -28,7 +30,8 @@ const initialBooks = {
       author: "F. Scott Fitzgerald",
       genre: "Classic",
       year: 1925,
-      cover: "https://via.placeholder.com/200x300",
+      cover:
+        "https://i0.wp.com/americanwritersmuseum.org/wp-content/uploads/2018/02/CK-3.jpg?resize=267%2C400&ssl=1",
       description:
         "A novel that examines the dark side of the American Dream during the Roaring Twenties.",
     },
@@ -38,39 +41,42 @@ const initialBooks = {
       author: "Jane Austen",
       genre: "Romance",
       year: 1813,
-      cover: "https://via.placeholder.com/200x300",
+      cover:
+        "https://cdn.penguin.co.in/wp-content/uploads/2023/05/9780143454229.jpg",
       description:
         "A romantic novel of manners that depicts the emotional development of protagonist Elizabeth Bennet.",
     },
-    {
-      id: 5,
-      title: "The Hobbit",
-      author: "J.R.R. Tolkien",
-      genre: "Fantasy",
-      year: 1937,
-      cover: "https://via.placeholder.com/200x300",
-      description:
-        "A children's fantasy novel set in a fictional world that follows the quest of home-loving Bilbo Baggins.",
-    },
-    {
-      id: 6,
-      title: "Harry Potter and the Philosopher's Stone",
-      author: "J.K. Rowling",
-      genre: "Fantasy",
-      year: 1997,
-      cover: "https://via.placeholder.com/200x300",
-      description:
-        "The first novel in the Harry Potter series that follows a young wizard's adventures at Hogwarts School of Witchcraft and Wizardry.",
-    },
   ],
 };
+
+export const fetchBooks = createAsyncThunk("books/fetchBooks", async () => {
+  const response = await fetch(
+    "https://e-commerce-app-da0a9-default-rtdb.firebaseio.com/books"
+  );
+  return response.json();
+});
+
+export const updateBooks = createAsyncThunk(
+  "books/updateBooks",
+  async (books) => {
+    const response = await fetch(
+      "https://e-commerce-app-da0a9-default-rtdb.firebaseio.com/books",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(books),
+      }
+    );
+    return await response.json();
+  }
+);
 
 const bookSlice = createSlice({
   name: "books",
   initialState: initialBooks,
   reducers: {
     addBook: (state, action) => {
-      state.books = [...state.books, action.payload];
+      state.books = action.payload;
     },
     updateBook: (state, action) => {
       state.books = action.payload;
@@ -78,6 +84,14 @@ const bookSlice = createSlice({
     deleteBook: (state, action) => {
       state.books = action.payload;
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchBooks.pending, (state, action) => {})
+      .addCase(fetchBooks.fulfilled, (state, action) => {
+        state.data = action.payload;
+      })
+      .addCase(fetchBooks.rejected, (state, action) => {});
   },
 });
 
