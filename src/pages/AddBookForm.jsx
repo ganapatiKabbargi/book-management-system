@@ -1,79 +1,99 @@
 import React, { useState } from "react";
 import styles from "./AddBookForm.module.css";
+import { useForm } from "react-hook-form";
 
-function AddBookForm({ onAddBook, onCancel }) {
-  const [bookData, setBookData] = useState({
-    title: "",
-    author: "",
-    genre: "",
-    year: "",
-    description: "",
-  });
+function AddBookForm({ onAddBook, onUpdateBook, onCancel, book }) {
+  // const [bookData, setBookData] = useState({
+  //   title: book?.title || "",
+  //   author: book?.author || "",
+  //   genre: book?.genre || "",
+  //   year: book?.year || "",
+  //   description: book?.description || "",
+  // });
 
-  const [errors, setErrors] = useState({});
+  const defaultData = {
+    title: book?.title || "",
+    author: book?.author || "",
+    genre: book?.genre || "",
+    year: book?.year || "",
+    description: book?.description || "",
+    id: book?.id || "",
+    cover: book?.cover || "",
+  };
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm({ defaultValues: defaultData });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setBookData({
-      ...bookData,
-      [name]: value,
-    });
+  // const [errors, setErrors] = useState({});
 
-    // Clear error when user types
-    if (errors[name]) {
-      setErrors({
-        ...errors,
-        [name]: "",
+  // const handleChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setBookData({
+  //     ...bookData,
+  //     [name]: value,
+  //   });
+
+  //   // Clear error when user types
+  //   if (errors[name]) {
+  //     setErrors({
+  //       ...errors,
+  //       [name]: "",
+  //     });
+  //   }
+  // };
+
+  // const validateForm = () => {
+  //   const newErrors = {};
+
+  //   if (!bookData.title.trim()) {
+  //     newErrors.title = "Title is required";
+  //   }
+
+  //   if (!bookData.author.trim()) {
+  //     newErrors.author = "Author is required";
+  //   }
+
+  //   if (!bookData.genre.trim()) {
+  //     newErrors.genre = "Genre is required";
+  //   }
+
+  //   if (!bookData.year) {
+  //     newErrors.year = "Year is required";
+  //   } else if (isNaN(bookData.year) || bookData.year < 0) {
+  //     newErrors.year = "Year must be a valid number";
+  //   }
+
+  //   if (!bookData.description.trim()) {
+  //     newErrors.description = "Description is required";
+  //   }
+
+  //   setErrors(newErrors);
+  //   return Object.keys(newErrors).length === 0;
+  // };
+
+  const submitHandler = (data) => {
+    console.log(data);
+    if (book) {
+      onUpdateBook({
+        ...data,
+        year: Number.parseInt(data.year),
       });
-    }
-  };
-
-  const validateForm = () => {
-    const newErrors = {};
-
-    if (!bookData.title.trim()) {
-      newErrors.title = "Title is required";
-    }
-
-    if (!bookData.author.trim()) {
-      newErrors.author = "Author is required";
-    }
-
-    if (!bookData.genre.trim()) {
-      newErrors.genre = "Genre is required";
-    }
-
-    if (!bookData.year) {
-      newErrors.year = "Year is required";
-    } else if (isNaN(bookData.year) || bookData.year < 0) {
-      newErrors.year = "Year must be a valid number";
-    }
-
-    if (!bookData.description.trim()) {
-      newErrors.description = "Description is required";
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    if (validateForm()) {
+    } else {
       onAddBook({
-        ...bookData,
-        year: Number.parseInt(bookData.year),
-      });
-
-      setBookData({
-        title: "",
-        author: "",
-        genre: "",
-        year: "",
-        description: "",
+        ...data,
+        year: Number.parseInt(data.year),
       });
     }
+
+    // setBookData({
+    //   title: "",
+    //   author: "",
+    //   genre: "",
+    //   year: "",
+    //   description: "",
+    // });
   };
   return (
     <div className={styles.addBookForm}>
@@ -88,102 +108,109 @@ function AddBookForm({ onAddBook, onCancel }) {
         </button>
       </div>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit(submitHandler)}>
         <div className={styles.formGroup}>
           <label htmlFor="title" className={styles.formLabel}>
-            Title
+            Title*
           </label>
+          {errors.title?.type === "required" && (
+            <span role="alert">title is required</span>
+          )}
           <input
             type="text"
             id="title"
             name="title"
-            value={bookData.title}
-            onChange={handleChange}
-            className={`${styles.formInput} ${
-              errors.title ? styles.inputError : ""
-            }`}
+            {...register("title", { required: true })}
+            aria-invalid={errors.title ? "true" : "false"}
+            className={`${styles.formInput} `}
           />
-          {errors.title && (
-            <span className={styles.errorMessage}>{errors.title}</span>
-          )}
         </div>
 
         <div className={styles.formGroup}>
           <label htmlFor="author" className={styles.formLabel}>
-            Author
+            Author*
           </label>
+          {errors.author?.type === "required" && (
+            <span role="alert">author is required</span>
+          )}
           <input
             type="text"
             id="author"
             name="author"
-            value={bookData.author}
-            onChange={handleChange}
-            className={`${styles.formInput} ${
-              errors.author ? styles.inputError : ""
-            }`}
+            {...register("author", { required: true })}
+            aria-invalid={errors.author ? "true" : "false"}
+            className={`${styles.formInput}`}
           />
-          {errors.author && (
-            <span className={styles.errorMessage}>{errors.author}</span>
+        </div>
+
+        <div className={styles.formGroup}>
+          <label htmlFor="cover" className={styles.formLabel}>
+            Cover*
+          </label>
+          {errors.cover?.type === "required" && (
+            <span role="alert">cover image is required</span>
           )}
+          <input
+            type="text"
+            id="cover"
+            name="cover"
+            {...register("cover", { required: true })}
+            aria-invalid={errors.cover ? "true" : "false"}
+            className={`${styles.formInput}`}
+          />
         </div>
 
         <div className={styles.formRow}>
           <div className={styles.formGroup}>
             <label htmlFor="genre" className={styles.formLabel}>
-              Genre
+              Genre*
             </label>
+            {errors.genre?.type === "required" && (
+              <span role="alert">genre is required</span>
+            )}
             <input
               type="text"
               id="genre"
               name="genre"
-              value={bookData.genre}
-              onChange={handleChange}
-              className={`${styles.formInput} ${
-                errors.genre ? styles.inputError : ""
-              }`}
+              {...register("genre", { required: true })}
+              aria-invalid={errors.genre ? "true" : "false"}
+              className={`${styles.formInput} `}
             />
-            {errors.genre && (
-              <span className={styles.errorMessage}>{errors.genre}</span>
-            )}
           </div>
 
           <div className={styles.formGroup}>
             <label htmlFor="year" className={styles.formLabel}>
-              Year
+              Year*
             </label>
+            {errors.year?.type === "required" && (
+              <span role="alert">author is required</span>
+            )}
             <input
               type="number"
               id="year"
               name="year"
-              value={bookData.year}
-              onChange={handleChange}
-              className={`${styles.formInput} ${
-                errors.year ? styles.inputError : ""
-              }`}
+              {...register("year", { required: true })}
+              aria-invalid={errors.year ? "true" : "false"}
+              className={`${styles.formInput}`}
             />
-            {errors.year && (
-              <span className={styles.errorMessage}>{errors.year}</span>
-            )}
           </div>
         </div>
 
         <div className={styles.formGroup}>
           <label htmlFor="description" className={styles.formLabel}>
-            Description
+            Description*
           </label>
+          {errors.description?.type === "required" && (
+            <span role="alert">author is required</span>
+          )}
           <textarea
             id="description"
             name="description"
-            value={bookData.description}
-            onChange={handleChange}
+            {...register("description", { required: true })}
             rows="4"
-            className={`${styles.formTextarea} ${
-              errors.description ? styles.inputError : ""
-            }`}
+            aria-invalid={errors.description ? "true" : "false"}
+            className={`${styles.formTextarea} `}
           ></textarea>
-          {errors.description && (
-            <span className={styles.errorMessage}>{errors.description}</span>
-          )}
         </div>
 
         <div className={styles.formActions}>

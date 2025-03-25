@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./BookList.module.css";
 
-function BookList({ books, onSelectBook, selectedBookId }) {
+function BookList({ books, onSelectBook, selectedBookId, handleDeleteBook,handleEditBook }) {
   if (books.length === 0) {
     return (
       <div className={styles.emptyList}>
@@ -10,7 +10,6 @@ function BookList({ books, onSelectBook, selectedBookId }) {
     );
   }
 
-  function handleDelete() {}
   return (
     <div className={styles.bookList}>
       {books.map((book) => (
@@ -19,14 +18,13 @@ function BookList({ books, onSelectBook, selectedBookId }) {
           className={`${styles.bookItem} ${
             selectedBookId === book.id ? styles.selected : ""
           }`}
-          onClick={() => onSelectBook(book)}
         >
           <img
             src={book.cover || "/placeholder.svg"}
             alt={book.title}
             className={styles.bookCover}
           />
-          <div className={styles.bookInfo}>
+          <div className={styles.bookInfo} onClick={() => onSelectBook(book)}>
             <h3 className={styles.bookTitle}>{book.title}</h3>
             <p className={styles.bookAuthor}>by {book.author}</p>
             <div className={styles.bookMeta}>
@@ -35,8 +33,15 @@ function BookList({ books, onSelectBook, selectedBookId }) {
             </div>
           </div>
           <div className={styles.detailsActions}>
-            <button className="btn btn-secondary">Edit</button>
-            <button className="btn btn-danger" onClick={handleDelete}>
+            <button className="btn btn-secondary" onClick={() => {
+                handleEditBook(book);
+              }}>Edit</button>
+            <button
+              className="btn btn-danger"
+              onClick={() => {
+                handleDeleteBook(book.id);
+              }}
+            >
               Delete
             </button>
           </div>

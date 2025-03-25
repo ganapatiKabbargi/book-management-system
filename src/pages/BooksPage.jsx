@@ -4,79 +4,18 @@ import styles from "./BooksPage.module.css";
 import BookList from "./BookList";
 import AddBookForm from "./AddBookForm";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-
-// const initialBooks = [
-//   {
-//     id: 1,
-//     title: "To Kill a Mockingbird",
-//     author: "Harper Lee",
-//     genre: "Fiction",
-//     year: 1960,
-//     cover: "https://via.placeholder.com/200x300",
-//     description:
-//       "A gripping, heart-wrenching, and wholly remarkable tale of coming-of-age in a South poisoned by virulent prejudice.",
-//   },
-//   {
-//     id: 2,
-//     title: "1984",
-//     author: "George Orwell",
-//     genre: "Dystopian",
-//     year: 1949,
-//     cover: "https://via.placeholder.com/200x300",
-//     description:
-//       "A dystopian social science fiction novel and cautionary tale set in a totalitarian society.",
-//   },
-//   {
-//     id: 3,
-//     title: "The Great Gatsby",
-//     author: "F. Scott Fitzgerald",
-//     genre: "Classic",
-//     year: 1925,
-//     cover: "https://via.placeholder.com/200x300",
-//     description:
-//       "A novel that examines the dark side of the American Dream during the Roaring Twenties.",
-//   },
-//   {
-//     id: 4,
-//     title: "Pride and Prejudice",
-//     author: "Jane Austen",
-//     genre: "Romance",
-//     year: 1813,
-//     cover: "https://via.placeholder.com/200x300",
-//     description:
-//       "A romantic novel of manners that depicts the emotional development of protagonist Elizabeth Bennet.",
-//   },
-//   {
-//     id: 5,
-//     title: "The Hobbit",
-//     author: "J.R.R. Tolkien",
-//     genre: "Fantasy",
-//     year: 1937,
-//     cover: "https://via.placeholder.com/200x300",
-//     description:
-//       "A children's fantasy novel set in a fictional world that follows the quest of home-loving Bilbo Baggins.",
-//   },
-//   {
-//     id: 6,
-//     title: "Harry Potter and the Philosopher's Stone",
-//     author: "J.K. Rowling",
-//     genre: "Fantasy",
-//     year: 1997,
-//     cover: "https://via.placeholder.com/200x300",
-//     description:
-//       "The first novel in the Harry Potter series that follows a young wizard's adventures at Hogwarts School of Witchcraft and Wizardry.",
-//   },
-// ];
+import { useDispatch, useSelector } from "react-redux";
+import { addBook, deleteBook, updateBook } from "../store/booksSlice";
 
 function BooksPage() {
   //   const [books, setBooks] = useState(initialBooks);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [bookToBeEdited, setBookToBeEdited] = useState(null);
   const [selectedBook, setSelectedBook] = useState(null);
   const [showAddForm, setShowAddForm] = useState(false);
   const books = useSelector((state) => state.booksAuth.books);
   console.log(books);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   //   function handleShowAddForm() {}
   function handleSelectBook(book) {
@@ -85,26 +24,49 @@ function BooksPage() {
   }
 
   const handleShowAddForm = () => {
-    setSelectedBook(null);
+    // setSelectedBook(null);
     setShowAddForm(true);
+  };
+
+  const handleCloseForm = () => {
+    setShowAddForm(false);
+    setBookToBeEdited(null);
   };
 
   const handleAddBook = (newBook) => {
     const bookWithId = {
       ...newBook,
       id: books.length + 1,
-      cover: "https://via.placeholder.com/200x300",
+      // cover: "https://via.placeholder.com/200x300",
     };
-    setBooks([...books, bookWithId]);
+    dispatch(addBook(bookWithId));
     console.log(bookWithId);
     setShowAddForm(false);
   };
 
+  const handleEditBook = (book) => {
+    setShowAddForm(true);
+    setBookToBeEdited(book);
+  };
+
+  const handleUpdateBook = (book) => {
+    console.log(book);
+    const updatedBooks = books.map((b) => {
+      if (b.id == book.id) {
+        return { ...book };
+      }
+      return b;
+    });
+    dispatch(updateBook(updatedBooks));
+    setShowAddForm(false);
+  };
+
   const handleDeleteBook = (bookId) => {
-    setBooks(books.filter((book) => book.id !== bookId));
-    if (selectedBook && selectedBook.id === bookId) {
-      setSelectedBook(null);
-    }
+    const updatedBooks = books.filter((book) => book.id !== bookId);
+    // if (selectedBook && selectedBook.id === bookId) {
+    //   setSelectedBook(null);
+    // }
+    dispatch(deleteBook(updatedBooks));
   };
   return (
     <div className="section">
@@ -147,15 +109,21 @@ function BooksPage() {
               books={books}
               onSelectBook={handleSelectBook}
               selectedBookId={selectedBook ? selectedBook.id : null}
+              handleDeleteBook={handleDeleteBook}
+              handleEditBook={handleEditBook}
             />
           </div>
 
-          <div className={styles.bookDetailsSection}>
-            <AddBookForm
-              onAddBook={handleAddBook}
-              onCancel={() => setShowAddForm(false)}
-            />
-          </div>
+          {showAddForm && (
+            <div className={styles.bookDetailsSection}>
+              <AddBookForm
+                book={bookToBeEdited}
+                onAddBook={handleAddBook}
+                onUpdateBook={handleUpdateBook}
+                onCancel={handleCloseForm}
+              />
+            </div>
+          )}
         </div>
       </div>
     </div>
