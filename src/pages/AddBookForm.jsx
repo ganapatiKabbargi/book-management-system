@@ -3,14 +3,6 @@ import styles from "./AddBookForm.module.css";
 import { useForm } from "react-hook-form";
 
 function AddBookForm({ onAddBook, onUpdateBook, onCancel, book }) {
-  // const [bookData, setBookData] = useState({
-  //   title: book?.title || "",
-  //   author: book?.author || "",
-  //   genre: book?.genre || "",
-  //   year: book?.year || "",
-  //   description: book?.description || "",
-  // });
-
   const defaultData = {
     title: book?.title || "",
     author: book?.author || "",
@@ -26,53 +18,6 @@ function AddBookForm({ onAddBook, onUpdateBook, onCancel, book }) {
     handleSubmit,
   } = useForm({ defaultValues: defaultData });
 
-  // const [errors, setErrors] = useState({});
-
-  // const handleChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setBookData({
-  //     ...bookData,
-  //     [name]: value,
-  //   });
-
-  //   // Clear error when user types
-  //   if (errors[name]) {
-  //     setErrors({
-  //       ...errors,
-  //       [name]: "",
-  //     });
-  //   }
-  // };
-
-  // const validateForm = () => {
-  //   const newErrors = {};
-
-  //   if (!bookData.title.trim()) {
-  //     newErrors.title = "Title is required";
-  //   }
-
-  //   if (!bookData.author.trim()) {
-  //     newErrors.author = "Author is required";
-  //   }
-
-  //   if (!bookData.genre.trim()) {
-  //     newErrors.genre = "Genre is required";
-  //   }
-
-  //   if (!bookData.year) {
-  //     newErrors.year = "Year is required";
-  //   } else if (isNaN(bookData.year) || bookData.year < 0) {
-  //     newErrors.year = "Year must be a valid number";
-  //   }
-
-  //   if (!bookData.description.trim()) {
-  //     newErrors.description = "Description is required";
-  //   }
-
-  //   setErrors(newErrors);
-  //   return Object.keys(newErrors).length === 0;
-  // };
-
   const submitHandler = (data) => {
     console.log(data);
     if (book) {
@@ -86,14 +31,6 @@ function AddBookForm({ onAddBook, onUpdateBook, onCancel, book }) {
         year: Number.parseInt(data.year),
       });
     }
-
-    // setBookData({
-    //   title: "",
-    //   author: "",
-    //   genre: "",
-    //   year: "",
-    //   description: "",
-    // });
   };
   return (
     <div className={styles.addBookForm}>
@@ -183,7 +120,7 @@ function AddBookForm({ onAddBook, onUpdateBook, onCancel, book }) {
               Year*
             </label>
             {errors.year?.type === "required" && (
-              <span role="alert">author is required</span>
+              <span role="alert">year is required</span>
             )}
             <input
               type="number"
@@ -201,7 +138,7 @@ function AddBookForm({ onAddBook, onUpdateBook, onCancel, book }) {
             Description*
           </label>
           {errors.description?.type === "required" && (
-            <span role="alert">author is required</span>
+            <span role="alert">description is required</span>
           )}
           <textarea
             id="description"

@@ -1,0 +1,18 @@
+.ctaSection {
+  background-color: #f0f7ff;
+  padding: 4rem 0;
+}
+
+.ctaButtons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+@media (max-width: 576px) {
+  .ctaButtons {
+    flex-direction: column;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+}

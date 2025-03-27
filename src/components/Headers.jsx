@@ -42,7 +42,7 @@ function Headers() {
                 Home
               </NavLink>
             </li>
-            {/* <li className={styles.navItem}>
+            <li className={styles.navItem}>
               <NavLink
                 to="/features"
                 className={({ isActive }) =>
@@ -52,7 +52,7 @@ function Headers() {
               >
                 Features
               </NavLink>
-            </li> */}
+            </li>
             {/* <li className={styles.navItem}>
               <NavLink
                 to="/books"

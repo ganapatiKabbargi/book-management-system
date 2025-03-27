@@ -1,11 +1,17 @@
 import React from "react";
 import styles from "./BookList.module.css";
 
-function BookList({ books, onSelectBook, selectedBookId, handleDeleteBook,handleEditBook }) {
-  if (books.length === 0) {
+function BookList({
+  books,
+  onSelectBook,
+  selectedBookId,
+  handleDeleteBook,
+  handleEditBook,
+}) {
+  if (books == null || books.length === 0) {
     return (
       <div className={styles.emptyList}>
-        <p>No books found matching your search criteria.</p>
+        <p>No books found in inventory click on add book to add a book.</p>
       </div>
     );
   }
@@ -23,8 +29,9 @@ function BookList({ books, onSelectBook, selectedBookId, handleDeleteBook,handle
             src={book.cover || "/placeholder.svg"}
             alt={book.title}
             className={styles.bookCover}
+            onClick={() => onSelectBook(book)}
           />
-          <div className={styles.bookInfo} onClick={() => onSelectBook(book)}>
+          <div className={styles.bookInfo}>
             <h3 className={styles.bookTitle}>{book.title}</h3>
             <p className={styles.bookAuthor}>by {book.author}</p>
             <div className={styles.bookMeta}>
@@ -33,9 +40,14 @@ function BookList({ books, onSelectBook, selectedBookId, handleDeleteBook,handle
             </div>
           </div>
           <div className={styles.detailsActions}>
-            <button className="btn btn-secondary" onClick={() => {
+            <button
+              className="btn btn-secondary"
+              onClick={() => {
                 handleEditBook(book);
-              }}>Edit</button>
+              }}
+            >
+              Edit
+            </button>
             <button
               className="btn btn-danger"
               onClick={() => {

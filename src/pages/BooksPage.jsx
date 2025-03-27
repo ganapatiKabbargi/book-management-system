@@ -18,18 +18,16 @@ function BooksPage() {
   const [selectedBook, setSelectedBook] = useState(null);
   const [showAddForm, setShowAddForm] = useState(false);
   const books = useSelector((state) => state.booksAuth.books);
-  console.log(books);
+  // console.log(books);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  //   function handleShowAddForm() {}
   function handleSelectBook(book) {
     setSelectedBook(book);
     navigate(`/bookDetails/${book.id}`);
   }
 
   const handleShowAddForm = () => {
-    // setSelectedBook(null);
     setShowAddForm(true);
   };
 
@@ -41,12 +39,11 @@ function BooksPage() {
   const handleAddBook = (newBook) => {
     const bookWithId = {
       ...newBook,
-      id: books.length + 1,
-      // cover: "https://via.placeholder.com/200x300",
+      id: books ? books.length + 1 : 1,
     };
-    const updatedBooks = [...books, bookWithId];
+    const updatedBooks = books ? [...books, bookWithId] : [bookWithId];
     dispatch(addBook(updatedBooks));
-    dispatch(updateBooks({ books: updatedBooks }));
+    dispatch(updateBooks(updatedBooks));
     console.log(bookWithId);
     setShowAddForm(false);
   };
@@ -65,16 +62,16 @@ function BooksPage() {
       return b;
     });
     dispatch(updateBook(updatedBooks));
+    dispatch(updateBooks(updatedBooks));
     setShowAddForm(false);
   };
 
   const handleDeleteBook = (bookId) => {
     const updatedBooks = books.filter((book) => book.id !== bookId);
-    // if (selectedBook && selectedBook.id === bookId) {
-    //   setSelectedBook(null);
-    // }
     dispatch(deleteBook(updatedBooks));
+    dispatch(updateBooks(updatedBooks));
   };
+
   return (
     <div className="section">
       <div className="container">
